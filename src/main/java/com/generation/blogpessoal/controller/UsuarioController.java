@@ -44,12 +44,11 @@ public class UsuarioController {
 	@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> put (@Valid @RequestBody Usuario usuario){
 		
-		var buscaUsuario = usuarioRepository.findAllByUsuarioIgnoreCase(usuario.getUsuario());
+		var buscaUsuario = usuarioRepository.findByUsuarioIgnoreCase(usuario.getUsuario());
 		
 		if(buscaUsuario.isPresent() && !(usuario.getId().equals(buscaUsuario.get().getId())))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		else
-	
 			return usuarioService.atualizarUsuario(usuario)
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
